@@ -10,7 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-       <module>langchain4j-corrective-rag</module>
+        <module>langchain4j-corrective-rag</module>
+        <module>langchain4j-moa</module>
     </modules>
 
 </project>
