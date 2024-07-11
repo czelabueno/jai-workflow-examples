@@ -7,7 +7,7 @@ The Mixture-of-Agents methodology leverages multiple models to boost performance
 Aggregators synthesize responses from other models into a single, high-quality answer. This leads to superior outcomes by leveraging the strengths of multiple models.
 
 ![ai-paper-image](images/moa-wf-4.svg)
-_<center>Fig 1. Mixture of Agents (MoA) structure generate better answer than GPT-4o using opens-source LLMs.</center>_
+_Fig 1. Mixture of Agents (MoA) structure generate better answer than GPT-4o using opens-source LLMs._
 
 ## How it works
 1. Define the number of layers in the MoA, this iterative refinement process continues for several cycles until obtaining a more

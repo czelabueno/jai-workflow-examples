@@ -20,6 +20,27 @@ With `langchain4j-corrective-rag`, implementing CRAG is as easy as defining your
 
 `langchain4j-corrective-rag` is a library that provides an easy way to implement CRAG in your Java applications. Here are the steps to get started:
 
+### Installation
+```shell
+mvn clean package install
+```
+> **Please note**: that `langchain4j-corrective-rag` depends on `langchain4j-workflow-0.1.0.jar`. Before installing `langchain4j-corrective-rag`, ensure that `langchain4j-workflow-0.1.0.jar` is installed in your local repo by following the instructions provided in the [LangChain4j-workflow repository](https://github.com/czelabueno/langchain4j-workflow?tab=readme-ov-file#installation).
+>
+>The process of distributing `langchain4j-corrective-rag` on Maven Central is currently underway.
+
+### Maven dependency
+Add the library to your `pom.xml` file:
+```xml
+<dependencies>
+   ...
+   <dependency>
+      <groupId>dev.langchain4j</groupId>
+      <artifactId>langchain4j-corrective-rag</artifactId>
+      <version>0.1.0</version>
+   </dependency>
+</dependencies>
+```
+
 1. **Define your `Document`s**: These are the documents that the system will search for answers. You can use your own data here.
 
 2. **Define a `ChatLanguageModel`**: This is the model that will generate answers. You can use any chat language model that you prefer.
@@ -168,6 +189,7 @@ If generateWorkflowImage is set to `true`, the system will generate an image of 
 
 ![Workflow Image](images/corrective-wf-2.svg)
 
+> :warning: **Important Note**: The `generateWorkflowImage` method relies on Graphviz to create the image. Therefore, it's crucial to have the J2V8 library, which is a set of Java bindings for V8 (a JavaScript engine), available in your Java library path (`java.library.path`). While some JDK distributions may already include this library, if yours does not, you can download the J2V8 library from the [official repository](https://mvnrepository.com/artifact/com.eclipsesource.j2v8).
 
 Enjoy!
 
