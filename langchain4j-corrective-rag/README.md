@@ -79,10 +79,86 @@ CorrectiveRag correctiveRag = DefaultCorrectiveRag.builder()
 String question = "How does the AlphaCodium paper work?";
 String answer = correctiveRag.answer(question);
 ```
+Console
+```shell
+DEBUG: Loading native library: /Users/CarlosZela1/.djl.ai/tokenizers/0.15.0-0.26.0-osx-aarch64/libtokenizers.dylib
+2024-06-24 23:46:24 [main] dev.langchain4j.rag.corrective.internal.DefaultCorrectiveRag.defaultContentRetriever()
+INFO: Using defaultContentRetriever, embeddingModel:dev.langchain4j.model.embedding.bge.small.en.v15.BgeSmallEnV15QuantizedEmbeddingModel embeddingStore:dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore
+2024-06-24 23:46:24 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Starting to ingest 3 documents
+2024-06-24 23:46:25 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Documents were split into 771 text segments
+2024-06-24 23:46:25 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Starting to embed 771 text segments
+2024-06-24 23:46:34 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Finished embedding 771 text segments
+2024-06-24 23:46:34 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Starting to store 771 text segments into the embedding store
+2024-06-24 23:46:34 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Finished storing 771 text segments into the embedding store
+2024-06-24 23:46:34 [main] dev.langchain4j.rag.corrective.internal.DefaultCorrectiveRag.defaultContentRetriever()
+INFO: Using defaultContentRetriever, embeddingModel:dev.langchain4j.model.embedding.bge.small.en.v15.BgeSmallEnV15QuantizedEmbeddingModel embeddingStore:dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore
+2024-06-24 23:46:34 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+2024-06-24 23:46:47 [main] dev.langchain4j.rag.corrective.internal.DefaultCorrectiveRag.answer()
+INFO: Running workflow in normal mode...
+2024-06-24 23:46:47 [main] dev.langchain4j.workflow.DefaultStateWorkflow.runNode()
+DEBUG: STARTING workflow in normally mode..
+2024-06-24 23:46:47 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.retrieve()
+2024-06-24 23:46:47 [main] dev.langchain4j.workflow.DefaultStateWorkflow.runNode()
+INFO: ---RETRIEVE---
+2024-06-24 23:46:47 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.gradeDocuments()
+INFO: ---CHECK DOCUMENT RELEVANCE TO QUESTION---
+2024-06-24 23:46:48 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.gradeDocuments()
+INFO: ---GRADE: DOCUMENT NOT RELEVANT---
+2024-06-24 23:46:49 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.gradeDocuments()
+INFO: ---GRADE: DOCUMENT NOT RELEVANT---
+2024-06-24 23:46:49 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.gradeDocuments()
+INFO: ---GRADE: DOCUMENT NOT RELEVANT---
+2024-06-24 23:46:49 [main] dev.langchain4j.rag.corrective.internal.DefaultCorrectiveRag.lambda$correctiveWorkflow$6()
+INFO: ---DECISION: ALL DOCUMENTS ARE NOT RELEVANT TO QUESTION, TRANSFORM QUERY---
+2024-06-24 23:46:49 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.transformQuery()
+INFO: ---TRANSFORM QUERY---
+2024-06-24 23:46:50 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.webSearch()
+INFO: ---WEB SEARCH---
+2024-06-24 23:46:50 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.webSearch()
+2024-06-24 23:46:55 [main] dev.langchain4j.rag.corrective.workflow.CorrectiveNodeFunctions.generate()
+INFO: ---GENERATE---
+2024-06-24 23:46:58 [main] dev.langchain4j.workflow.DefaultStateWorkflow.runNode()
+DEBUG: Reached END state
+2024-06-24 23:46:58 [main] dev.langchain4j.rag.corrective.internal.DefaultCorrectiveRag.answer()
+DEBUG: Transitions: 
+START -> Retrieve Node -> Grade Node -> Re-Write Query Node -> WebSearch Node -> Generate Node -> END
+2024-06-24 23:46:58 [main] dev.langchain4j.rag.corrective.internal.DefaultCorrectiveRag.answer()
+INFO: Final Answer: 
+The AlphaCodium method for code generation operates in two main phases. In the pre-processing phase, the model reasons about the problem in natural language, gaining knowledge and insight to help with more difficult stages. The second phase is an iterative code generation phase, where the model generates, runs, and fixes a code solution against public and AI-generated tests. This approach is designed to improve the performance of large language models on code problems by focusing on details, identifying edge cases, and addressing code-specific issues.
+2024-06-24 23:46:58 [main] dev.langchain4j.workflow.graph.graphviz.GraphvizImageGenerator.generateImage()
+DEBUG: Generating image at: /Users/CarlosZela1/langchain4j-workflow-examples/langchain4j-corrective-rag/images/corrective-wf-2.svg with format: SVG
+Using Dot format: 
+digraph workflow {
+ node [style=filled,fillcolor=lightgrey]
+ rankdir=LR;
+ beautify=true
+
+ start -> RetrieveNode;
+ RetrieveNode -> GradeNode;
+ GradeNode -> RewriteQueryNode;
+ RewriteQueryNode -> WebsearchNode;
+ WebsearchNode -> GenerateNode;
+ GenerateNode -> end;
+
+ start [shape=Mdiamond, fillcolor="orange"];
+ end [shape=Msquare, fillcolor="lightgreen"];
+}
+2024-06-24 23:46:58 [main] guru.nidi.graphviz.engine.AbstractGraphvizEngine.initTask()
+2024-06-24 23:46:58 [main] guru.nidi.graphviz.engine.V8JavascriptEngine.<init>()
+INFO: Starting V8 runtime...
+Process finished with exit code 0
+```
+
 Final answer should be:
 
 ```shell
-INFO: Final Answer:
+INFO: Final Answer...
 The AlphaCodium method for code generation operates in two main phases. In the pre-processing phase, the model reasons about the problem in natural language, gaining knowledge and insight to help with more difficult stages. 
 The second phase is an iterative code generation phase, where the model generates, runs, and fixes a code solution against public and AI-generated tests. This approach is designed to improve the performance of large language models on code problems by focusing on details, identifying edge cases, and addressing code-specific issues.
 ```
