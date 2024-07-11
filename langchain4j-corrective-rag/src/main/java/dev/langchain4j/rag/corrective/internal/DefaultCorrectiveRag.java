@@ -144,7 +144,7 @@ public class DefaultCorrectiveRag implements CorrectiveRag {
             if (obj.getWebSearch().equals("Yes")) {
                 log.info("---DECISION: ALL DOCUMENTS ARE NOT RELEVANT TO QUESTION, TRANSFORM QUERY---");
                 return rewriteQueryNode;
-            }else {
+            } else {
                 log.info("---DECISION: GENERATE---");
                 return generateNode;
             }
