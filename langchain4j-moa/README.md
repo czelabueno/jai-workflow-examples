@@ -18,6 +18,26 @@ _<center>Fig 1. Mixture of Agents (MoA) structure generate better answer than GP
 
 ## How to use
 To use `langchain4j-moa`, you need to instance the `MixtureOfAgents` interface. You can use `DefaultMixtureOfAgents` class to get quickly a completeness implementation.
+### Installation
+```shell
+mvn clean package install
+```
+> **Please note**: that `langchain4j-moa` depends on `langchain4j-workflow-0.1.0.jar`. Before installing `langchain4j-moa`, ensure that `langchain4j-workflow-0.1.0.jar` is installed in your local repo by following the instructions provided in the [LangChain4j-workflow repository](https://github.com/czelabueno/langchain4j-workflow?tab=readme-ov-file#installation).
+> 
+>The process of distributing `langchain4j-moa` on Maven Central is currently underway.
+
+### Maven dependency
+Add the library to your `pom.xml` file:
+```xml
+<dependencies>
+   ...
+   <dependency>
+      <groupId>dev.langchain4j</groupId>
+      <artifactId>langchain4j-moa</artifactId>
+      <version>0.1.0</version>
+   </dependency>
+</dependencies>
+```
 
 This interface has two methods: `answer` and `answerStream` to get the final high-quality answer. The `answer` method is used to answer a question in normal mode, while the `answerStream` method is used to answer a question in streaming mode.
 
@@ -330,6 +350,8 @@ If generateWorkflowImage is set to `true`, the system will generate an image of 
 > **Remember**: Generate an image of the workflow execution is optional, and it can add more latency. If you want to generate an image of the workflow execution, you need to set the `generateWorkflowImage` flag to `true` and, if you want to save the image to a specific path, you need to set the `workflowImageOutputPath` to the desired path.
 
 ![Workflow Image](images/moa-wf-3.svg)
+
+> :warning: **Important Note**: The `generateWorkflowImage` method relies on Graphviz to create the image. Therefore, it's crucial to have the J2V8 library, which is a set of Java bindings for V8 (a JavaScript engine), available in your Java library path (`java.library.path`). While some JDK distributions may already include this library, if yours does not, you can download the J2V8 library from the [official repository](https://mvnrepository.com/artifact/com.eclipsesource.j2v8).
 
 
 Enjoy!
