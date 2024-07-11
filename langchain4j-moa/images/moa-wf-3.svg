@@ -1,0 +1,213 @@
+<svg width="1095px" height="280px"
+ viewBox="0.00 0.00 1095.04 280.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0.0) translate(4.0 276.0)">
+<title>moaWorkflow</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-276 1091.04,-276 1091.04,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_1</title>
+<polygon fill="lightgrey" stroke="lightgrey" points="145.71,-8 145.71,-261 310.24,-261 310.24,-8 145.71,-8"/>
+<text text-anchor="start" x="206.4" y="-245.4" font-family="Times,serif" font-weight="bold" font-size="14.00">Layer 1</text>
+</g>
+<g id="clust7" class="cluster">
+<title>cluster_4</title>
+<polygon fill="white" stroke="blue" points="699.32,-159 699.32,-264 1014.28,-264 1014.28,-159 699.32,-159"/>
+<text text-anchor="start" x="835.23" y="-248.4" font-family="Times,serif" font-weight="bold" font-size="14.00">Layer 4</text>
+</g>
+<g id="clust5" class="cluster">
+<title>cluster_3</title>
+<polygon fill="lightgrey" stroke="lightgrey" points="514.78,-8 514.78,-261 679.32,-261 679.32,-8 514.78,-8"/>
+<text text-anchor="start" x="575.48" y="-245.4" font-family="Times,serif" font-weight="bold" font-size="14.00">Layer 3</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_2</title>
+<polygon fill="lightgrey" stroke="lightgrey" points="330.24,-8 330.24,-261 494.78,-261 494.78,-8 330.24,-8"/>
+<text text-anchor="start" x="390.94" y="-245.4" font-family="Times,serif" font-weight="bold" font-size="14.00">Layer 2</text>
+</g>
+<!-- A1_1 -->
+<g id="node1" class="node">
+<title>A1_1</title>
+<ellipse fill="white" stroke="white" cx="227.98" cy="-45" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="227.98" y="-49.2" font-family="Times,serif" font-size="14.00">AgentNode 1.1 </text>
+<text text-anchor="middle" x="227.98" y="-32.4" font-family="Times,serif" font-size="14.00"> mistral7B</text>
+</g>
+<!-- A1_2 -->
+<g id="node2" class="node">
+<title>A1_2</title>
+<ellipse fill="white" stroke="white" cx="227.98" cy="-122" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="227.98" y="-126.2" font-family="Times,serif" font-size="14.00">AgentNode 1.2 </text>
+<text text-anchor="middle" x="227.98" y="-109.4" font-family="Times,serif" font-size="14.00"> mixtral87B</text>
+</g>
+<!-- A1_1&#45;&gt;A1_2 -->
+<g id="edge1" class="edge">
+<title>A1_1&#45;&gt;A1_2</title>
+<path fill="none" stroke="black" d="M227.98,-74.48C227.98,-77.08 227.98,-79.67 227.98,-82.27"/>
+<polygon fill="black" stroke="black" points="224.48,-82.3 227.98,-92.3 231.48,-82.3 224.48,-82.3"/>
+</g>
+<!-- A2_1 -->
+<g id="node4" class="node">
+<title>A2_1</title>
+<ellipse fill="white" stroke="white" cx="412.51" cy="-45" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="412.51" y="-49.2" font-family="Times,serif" font-size="14.00">AgentNode 2.1 </text>
+<text text-anchor="middle" x="412.51" y="-32.4" font-family="Times,serif" font-size="14.00"> mistral7B</text>
+</g>
+<!-- A1_1&#45;&gt;A2_1 -->
+<g id="edge8" class="edge">
+<title>A1_1&#45;&gt;A2_1</title>
+<path fill="none" stroke="black" d="M302.43,-45C310.91,-45 319.59,-45 328.18,-45"/>
+<polygon fill="black" stroke="black" points="328.21,-48.5 338.21,-45 328.21,-41.5 328.21,-48.5"/>
+</g>
+<!-- A1_3 -->
+<g id="node3" class="node">
+<title>A1_3</title>
+<ellipse fill="white" stroke="white" cx="227.98" cy="-199" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="227.98" y="-203.2" font-family="Times,serif" font-size="14.00">AgentNode 1.3 </text>
+<text text-anchor="middle" x="227.98" y="-186.4" font-family="Times,serif" font-size="14.00"> mixtral822B</text>
+</g>
+<!-- A1_2&#45;&gt;A1_3 -->
+<g id="edge2" class="edge">
+<title>A1_2&#45;&gt;A1_3</title>
+<path fill="none" stroke="black" d="M227.98,-151.48C227.98,-154.08 227.98,-156.67 227.98,-159.27"/>
+<polygon fill="black" stroke="black" points="224.48,-159.3 227.98,-169.3 231.48,-159.3 224.48,-159.3"/>
+</g>
+<!-- A2_2 -->
+<g id="node5" class="node">
+<title>A2_2</title>
+<ellipse fill="white" stroke="white" cx="412.51" cy="-122" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="412.51" y="-126.2" font-family="Times,serif" font-size="14.00">AgentNode 2.2 </text>
+<text text-anchor="middle" x="412.51" y="-109.4" font-family="Times,serif" font-size="14.00"> mixtral87B</text>
+</g>
+<!-- A1_2&#45;&gt;A2_2 -->
+<g id="edge10" class="edge">
+<title>A1_2&#45;&gt;A2_2</title>
+<path fill="none" stroke="black" d="M302.43,-122C310.91,-122 319.59,-122 328.18,-122"/>
+<polygon fill="black" stroke="black" points="328.21,-125.5 338.21,-122 328.21,-118.5 328.21,-125.5"/>
+</g>
+<!-- A2_3 -->
+<g id="node6" class="node">
+<title>A2_3</title>
+<ellipse fill="white" stroke="white" cx="412.51" cy="-199" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="412.51" y="-203.2" font-family="Times,serif" font-size="14.00">AgentNode 2.3 </text>
+<text text-anchor="middle" x="412.51" y="-186.4" font-family="Times,serif" font-size="14.00"> mixtral822B</text>
+</g>
+<!-- A1_3&#45;&gt;A2_3 -->
+<g id="edge12" class="edge">
+<title>A1_3&#45;&gt;A2_3</title>
+<path fill="none" stroke="black" d="M302.43,-199C310.91,-199 319.59,-199 328.18,-199"/>
+<polygon fill="black" stroke="black" points="328.21,-202.5 338.21,-199 328.21,-195.5 328.21,-202.5"/>
+</g>
+<!-- A2_1&#45;&gt;A2_2 -->
+<g id="edge3" class="edge">
+<title>A2_1&#45;&gt;A2_2</title>
+<path fill="none" stroke="black" d="M412.51,-74.48C412.51,-77.08 412.51,-79.67 412.51,-82.27"/>
+<polygon fill="black" stroke="black" points="409.01,-82.3 412.51,-92.3 416.01,-82.3 409.01,-82.3"/>
+</g>
+<!-- A3_1 -->
+<g id="node7" class="node">
+<title>A3_1</title>
+<ellipse fill="white" stroke="white" cx="597.05" cy="-45" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="597.05" y="-49.2" font-family="Times,serif" font-size="14.00">AgentNode 3.1 </text>
+<text text-anchor="middle" x="597.05" y="-32.4" font-family="Times,serif" font-size="14.00"> mistral7B</text>
+</g>
+<!-- A2_1&#45;&gt;A3_1 -->
+<g id="edge9" class="edge">
+<title>A2_1&#45;&gt;A3_1</title>
+<path fill="none" stroke="black" d="M486.97,-45C495.44,-45 504.13,-45 512.72,-45"/>
+<polygon fill="black" stroke="black" points="512.75,-48.5 522.75,-45 512.75,-41.5 512.75,-48.5"/>
+</g>
+<!-- A2_2&#45;&gt;A2_3 -->
+<g id="edge4" class="edge">
+<title>A2_2&#45;&gt;A2_3</title>
+<path fill="none" stroke="black" d="M412.51,-151.48C412.51,-154.08 412.51,-156.67 412.51,-159.27"/>
+<polygon fill="black" stroke="black" points="409.01,-159.3 412.51,-169.3 416.01,-159.3 409.01,-159.3"/>
+</g>
+<!-- A3_2 -->
+<g id="node8" class="node">
+<title>A3_2</title>
+<ellipse fill="white" stroke="white" cx="597.05" cy="-122" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="597.05" y="-126.2" font-family="Times,serif" font-size="14.00">AgentNode 3.2 </text>
+<text text-anchor="middle" x="597.05" y="-109.4" font-family="Times,serif" font-size="14.00"> mixtral87B</text>
+</g>
+<!-- A2_2&#45;&gt;A3_2 -->
+<g id="edge11" class="edge">
+<title>A2_2&#45;&gt;A3_2</title>
+<path fill="none" stroke="black" d="M486.97,-122C495.44,-122 504.13,-122 512.72,-122"/>
+<polygon fill="black" stroke="black" points="512.75,-125.5 522.75,-122 512.75,-118.5 512.75,-125.5"/>
+</g>
+<!-- A3_3 -->
+<g id="node9" class="node">
+<title>A3_3</title>
+<ellipse fill="white" stroke="white" cx="597.05" cy="-199" rx="74.04" ry="29.33"/>
+<text text-anchor="middle" x="597.05" y="-203.2" font-family="Times,serif" font-size="14.00">AgentNode 3.3 </text>
+<text text-anchor="middle" x="597.05" y="-186.4" font-family="Times,serif" font-size="14.00"> mixtral822B</text>
+</g>
+<!-- A2_3&#45;&gt;A3_3 -->
+<g id="edge13" class="edge">
+<title>A2_3&#45;&gt;A3_3</title>
+<path fill="none" stroke="black" d="M486.97,-199C495.44,-199 504.13,-199 512.72,-199"/>
+<polygon fill="black" stroke="black" points="512.75,-202.5 522.75,-199 512.75,-195.5 512.75,-202.5"/>
+</g>
+<!-- A3_1&#45;&gt;A3_2 -->
+<g id="edge5" class="edge">
+<title>A3_1&#45;&gt;A3_2</title>
+<path fill="none" stroke="black" d="M597.05,-74.48C597.05,-77.08 597.05,-79.67 597.05,-82.27"/>
+<polygon fill="black" stroke="black" points="593.55,-82.3 597.05,-92.3 600.55,-82.3 593.55,-82.3"/>
+</g>
+<!-- A3_2&#45;&gt;A3_3 -->
+<g id="edge6" class="edge">
+<title>A3_2&#45;&gt;A3_3</title>
+<path fill="none" stroke="black" d="M597.05,-151.48C597.05,-154.08 597.05,-156.67 597.05,-159.27"/>
+<polygon fill="black" stroke="black" points="593.55,-159.3 597.05,-169.3 600.55,-159.3 593.55,-159.3"/>
+</g>
+<!-- A4_1 -->
+<g id="node10" class="node">
+<title>A4_1</title>
+<defs>
+<linearGradient id="l_0" gradientUnits="userSpaceOnUse" x1="856.8" y1="-230.92" x2="856.8" y2="-167.08" >
+<stop offset="0" style="stop-color:lightgray;stop-opacity:1.;"/>
+<stop offset="1" style="stop-color:lightgreen;stop-opacity:1.;"/>
+</linearGradient>
+</defs>
+<ellipse fill="url(#l_0)" stroke="black" cx="856.8" cy="-199" rx="149.45" ry="31.92"/>
+<text text-anchor="middle" x="856.8" y="-203.65" font-family="Times,serif" font-size="15.50">Aggregator agent 4.1 </text>
+<text text-anchor="middle" x="856.8" y="-185.05" font-family="Times,serif" font-size="15.50"> AggregatorNode: mistralLarge</text>
+</g>
+<!-- A3_3&#45;&gt;A4_1 -->
+<g id="edge14" class="edge">
+<title>A3_3&#45;&gt;A4_1</title>
+<path fill="none" stroke="black" d="M671.57,-199C679.7,-199 688.19,-199 696.87,-199"/>
+<polygon fill="black" stroke="black" points="697.14,-202.5 707.14,-199 697.14,-195.5 697.14,-202.5"/>
+</g>
+<!-- end -->
+<g id="node12" class="node">
+<title>end</title>
+<polygon fill="green" stroke="black" points="1086.93,-221.27 1042.39,-221.27 1042.39,-176.73 1086.93,-176.73 1086.93,-221.27"/>
+<polyline fill="none" stroke="black" points="1054.39,-221.27 1042.39,-209.27 "/>
+<polyline fill="none" stroke="black" points="1042.39,-188.73 1054.39,-176.73 "/>
+<polyline fill="none" stroke="black" points="1074.93,-176.73 1086.93,-188.73 "/>
+<polyline fill="none" stroke="black" points="1086.93,-209.27 1074.93,-221.27 "/>
+<text text-anchor="middle" x="1064.66" y="-194.8" font-family="Times,serif" font-size="14.00">END</text>
+</g>
+<!-- A4_1&#45;&gt;end -->
+<g id="edge15" class="edge">
+<title>A4_1&#45;&gt;end</title>
+<path fill="none" stroke="black" d="M1006.32,-199C1015.71,-199 1024.47,-199 1032.18,-199"/>
+<polygon fill="black" stroke="black" points="1032.32,-202.5 1042.32,-199 1032.32,-195.5 1032.32,-202.5"/>
+</g>
+<!-- start -->
+<g id="node11" class="node">
+<title>start</title>
+<polygon fill="orange" stroke="black" points="58.85,-63 0.15,-45 58.85,-27 117.56,-45 58.85,-63"/>
+<polyline fill="none" stroke="black" points="11.62,-48.52 11.62,-41.48 "/>
+<polyline fill="none" stroke="black" points="47.38,-30.52 70.33,-30.52 "/>
+<polyline fill="none" stroke="black" points="106.09,-41.48 106.09,-48.52 "/>
+<polyline fill="none" stroke="black" points="70.33,-59.48 47.38,-59.48 "/>
+<text text-anchor="middle" x="58.85" y="-40.8" font-family="Times,serif" font-size="14.00">START</text>
+</g>
+<!-- start&#45;&gt;A1_1 -->
+<g id="edge7" class="edge">
+<title>start&#45;&gt;A1_1</title>
+<path fill="none" stroke="black" d="M117.84,-45C126.1,-45 134.74,-45 143.38,-45"/>
+<polygon fill="black" stroke="black" points="143.49,-48.5 153.49,-45 143.49,-41.5 143.49,-48.5"/>
+</g>
+</g>
+</svg>
