@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Network Flow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .network {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border: 1px solid #999;
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        .layer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px;
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .node {
+            width: 150px;
+            height: 50px;
+            background-color: white;
+            border: 1px solid #999;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 14px;
+            text-align: center;
+            position: relative;
+        }
+        .aggregator-node {
+            width: 150px;
+            height: 70px;
+            background-color: #b4e8a0;
+            border: 1px solid #999;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 14px;
+            text-align: center;
+            position: relative;
+        }
+        .start, .end {
+            width: 80px;
+            height: 40px;
+            display: flex;
+            margin: 0 20px;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        .start {
+            background-color: orange;
+        }
+        .end {
+            background-color: green;
+            color: white;
+        }
+        .arrow {
+            position: absolute;
+            background-color: red;
+            height: 2px;
+            width: 20px;
+            transition: all 0.5s linear;
+        }
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid red;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+        .layer:last-of-type {
+            background-color: white;
+            border: 1px solid blue;
+        }
+        .layer:last-of-type .node {
+            background-color: #90EE90;
+        }
+        /* Add styles for the user icon and animated text */
+        .user-icon {
+            width: 50px;
+            height: 50px;
+            background: url('user-icon.png') no-repeat center center;
+            background-size: cover;
+            margin-right: 20px;
+        }
+        .title-moa {
+            position: fixed;
+            z-index: 1000;
+            color: black;
+            padding: 6px; /* Add this line */
+            left: 45%;
+            top: 4%;
+        }
+        .animated-text {
+            position: fixed;
+            z-index: 1000;
+            color: black;
+            background-color: white; /* Add this line */
+            padding: 10px; /* Add this line */
+            border-radius: 5px; /* Add this line */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add this line */
+            animation: moveText 1s linear infinite;
+            opacity: 0;
+            left: 50%;
+            top: 70%;
+        }
+        @keyframes moveText {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        /* Add styles for the text divs */
+        .text, .aggregator-text {
+            color: black;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: justify;
+            opacity: 1;
+        }
+
+        .user-text {
+            top: 57%;
+            left: 25%;
+        }
+        .system-text {
+            text-align: left;
+        }
+
+        .userMessage, .systemMessage, .aiMessage {
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            margin-left: 35px;
+            margin-right: 55px;
+            position: relative;
+            width: fit-content;
+            max-width: 30%;
+            align-items: center;
+            display: flex;
+        }
+
+        .userMessage::after, .systemMessage::after, .aiMessage::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+        }
+
+        .userMessage {
+            background-color: #FFD700;
+            align-self: flex-start;
+            margin-top: 60px;
+            width: 250px;
+        }
+
+        .userMessage::after {
+            border-right-color: #FFD700;
+            border-left: 0;
+            left: -20px;
+            top: 10px;
+        }
+
+        .systemMessage {
+            background-color: #e0e0e0;
+            align-self: center;
+            width: 300px;
+        }
+
+        .systemMessage::after {
+            border-left-color: #e0e0e0;
+            border-right: 0;
+            right: -20px;
+            top: 10px;
+        }
+
+        .aiMessage {
+            background-color: #b4e8a0;
+            align-self: flex-start;
+            margin-bottom: 200px;
+            width: 350px;
+            color: black;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: justify;
+            opacity: 1;
+        }
+
+        .aiMessage::after {
+            border-right-color: #b4e8a0;
+            border-left: 0;
+            left: -20px;
+            top: 10px;
+        }
+        .messageTitle {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: white;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin-right: 10px;
+            align-self: flex-start;
+        }
+        .messageIcon {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        /* Add new styles */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: space-between;
+        }
+
+        .middle-content {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Change this from center to flex-start */
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="userMessage">
+            <table>
+                <tr>
+                    <td style="width: 60px;">
+                        <img src="user-icon.png" class="messageIcon">
+                    </td>
+                    <td>
+                        <div class="messageTitle">User Message</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <div class="text user-text"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="middle-content">
+            <div class="systemMessage">
+                <table>
+                    <tr>
+                        <td style="width: 60px;">
+                            <img src="system-icon.png" class="messageIcon">
+                        </td>
+                        <td>
+                            <div class="messageTitle">System Message</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="text system-text">
+                                Prompt: <br>
+                                "You have been provided with a set of responses from various open-source models to the latest user query.\n",
+                                "Your task is to synthesize these responses into a single, high-quality response" <br>
+                                "{{modelResponses}}"
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="network">
+                <div class="title-moa">
+                    <center>
+                        <h2>Langchain4j - MixtureOfAgents (MoA)</h2>
+                    </center>
+                    <p> - NumberOfLayers = 3<br> - RefLLMs = { Mixtral8x22B, Claude3Haiku, Qwen2x72B }<br> - GenerateLLM = Mixtral8x22B</p>
+                    <br>
+                    <p style='font-size:small;'><a href='https://github.com/czelabueno/langchain4j-workflow-examples/tree/main/langchain4j-moa'>github.com/czelabueno/langchain4j-workflow-examples/tree/main/langchain4j-moa</a></p>
+                </div>
+                <div class="start">START</div>
+                <div class="layer">
+                    <div class="node layer-1">AgentNode 1.3<br>Qwen2x72B</div>
+                    <div class="node layer-1">AgentNode 1.2<br>Claude3Haiku</div>
+                    <div class="node layer-1">AgentNode 1.1<br>Mixtral8x22B</div>
+                </div>
+                <div class="layer">
+                    <div class="node layer-2">AgentNode 2.3<br>Qwen2x72B</div>
+                    <div class="node layer-2">AgentNode 2.2<br>Claude3Haiku</div>
+                    <div class="node layer-2">AgentNode 2.1<br>Mixtral8x22B</div>
+                </div>
+                <div class="layer">
+                    <div class="node layer-3">AgentNode 3.3<br>Qwen2x72B</div>
+                    <div class="node layer-3">AgentNode 3.2<br>Claude3Haiku</div>
+                    <div class="node layer-3">AgentNode 3.1<br>Mixtral8x22B</div>
+                </div>
+                <div class="layer">
+                    <div class="aggregator-node">Aggregator agent 4.1<br>AggregatorNode: Mixtral8x22B</div>
+                </div>
+                <div class="end">END</div>
+                <div class="animated-text"></div> <!-- Add animated text here -->
+            </div>
+        </div>
+        <div class="aiMessage">
+            <table>
+                <tr>
+                    <td style="width: 60px;">
+                        <img src="ai-icon.png" class="messageIcon">
+                    </td>
+                    <td>
+                        <div class="messageTitle">AI Message</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="aggregator-text"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const nodes = document.querySelectorAll('.node');
+        const start = document.querySelector('.start');
+        const systemMessage = document.querySelector('.systemMessage');
+        const userMessage = document.querySelector('.userMessage');
+        const aiMessage = document.querySelector('.aiMessage');
+        const end = document.querySelector('.end');
+        const aggregator = document.querySelector('.aggregator-node');
+        const arrow = document.createElement('div');
+        arrow.className = 'arrow';
+        document.body.appendChild(arrow);
+
+        const path = [
+            { from: systemMessage, to: start },  // systemMessage -> START
+            { from: start, to: nodes[2] },  // START -> A1.1
+            { from: start, to: nodes[1] },  // START -> A1.2
+            { from: start, to: nodes[0] },  // START -> A1.3
+            { from: nodes[2], to: nodes[5] },  // A1.1 -> A2.1
+            { from: nodes[1], to: nodes[4] },  // A1.2 -> A2.2
+            { from: nodes[0], to: nodes[3] },  // A1.3 -> A2.3
+            { from: nodes[5], to: nodes[8] },  // A2.1 -> A3.1
+            { from: nodes[4], to: nodes[7] },  // A2.2 -> A3.2
+            { from: nodes[3], to: nodes[6] },  // A2.3 -> A3.3
+            { from: nodes[8], to: aggregator },  // A3.1 -> A4.1
+            { from: nodes[7], to: aggregator },  // A3.2 -> A4.1
+            { from: nodes[6], to: aggregator },  // A3.3 -> A4.1
+            { from: aggregator, to: end }   // A4.1 -> END
+        ];
+
+        const animatedTextContent = {
+            'user-icon': 'User makes a question',
+            'start': 'Agents getting responses from LLMs',
+            'node layer-1': 'Refinement previous agent responses',
+            'node layer-3': 'Synthesizing responses from other models into a single, high-quality output',
+            'aggregator-node': 'Generate final answer from the refined responses',
+        };
+
+        let currentIndex = 0;
+        let previousElementClass = '';
+
+        function fromToTo(from, to) {
+            const fromRect = from.getBoundingClientRect();
+            const toRect = to.getBoundingClientRect();
+            arrow.style.left = `${fromRect.left + fromRect.right / 3}px`;
+            arrow.style.top = `${fromRect.bottom}px`;
+            arrow.style.width = `${toRect.top - fromRect.bottom}px`;
+            arrow.style.height = '2px';
+            arrow.style.transform = 'rotate(90deg)';
+        }
+
+        // Function to display a word by word effect
+        function displayWords(words, element, delay) {
+            return new Promise(resolve => {
+                element.textContent = ''; // Clear the text content before displaying new words
+                let i = 0;
+                const intervalId = setInterval(() => {
+                    if (i < words.length) {
+                        element.textContent += words[i] + ' ';
+                        i++;
+                    } else {
+                        clearInterval(intervalId);
+                        resolve();
+                    }
+                }, delay);
+            });
+        }
+
+        async function moveArrow() {
+            const { from, to } = path[currentIndex];
+            const fromRect = from.getBoundingClientRect();
+            const toRect = to.getBoundingClientRect();
+
+            arrow.style.left = `${fromRect.right}px`;
+            arrow.style.top = `${fromRect.top + fromRect.height / 2}px`;
+
+            // Define the texts
+            const aggregatorTextContent = 'New York City, affectionately known as the "Big Apple" or the "City That Never Sleeps," is a vibrant metropolis offering an array of attractions and activities. To make the most of your visit, consider these top highlights: \n 1. Statue of Liberty and Ellis Island: These iconic landmarks offer a glimpse into America\'s rich history as a nation of immigrants. Take a ferry from Battery Park and explore ....';
+
+            // Get the text divs
+            const aggregatorText = document.querySelector('.aggregator-text');
+
+            // Split the texts into words
+            const aggregatorWords = aggregatorTextContent.split(' ');
+
+            setTimeout(() => {
+                if (from.className === 'systemMessage' || from.className === 'aggregator-node') {
+                    // Moving horizontally
+                    arrow.style.width = `${toRect.left - fromRect.right}px`;
+                    arrow.style.height = '2px';
+                    arrow.style.transform = 'rotate(0deg)';
+                } else if (from.className === 'start' || to.className === 'aggregator-node') {
+                    // Moving diagonally
+                    const angle = Math.atan2(toRect.top - fromRect.top, toRect.left - fromRect.right);
+                    const length = Math.sqrt(Math.pow(toRect.left - fromRect.right, 2) + Math.pow(toRect.top - fromRect.top, 2));
+
+                    arrow.style.left = `${fromRect.right}px`;
+                    arrow.style.top = `${fromRect.top + fromRect.height / 2}px`;
+                    arrow.style.width = `${length}px`;
+                    arrow.style.transform = `rotate(${angle}rad)`;
+                    arrow.style.transformOrigin = 'left';
+                } else if (toRect.top < fromRect.top) {
+                    // Moving upwards
+                    arrow.style.height = `${fromRect.top - toRect.bottom}px`;
+                    arrow.style.width = '2px';
+                    arrow.style.transform = 'rotate(0deg)';
+                    arrow.style.top = `${toRect.bottom}px`;
+                    arrow.style.left = `${toRect.left + toRect.width / 2}px`;
+                } else if (toRect.top > fromRect.top) {
+                    // Moving downwards
+                    arrow.style.height = `${toRect.top - fromRect.bottom}px`;
+                    arrow.style.width = '2px';
+                    arrow.style.transform = 'rotate(0deg)';
+                } else {
+                    // Moving horizontally
+                    arrow.style.width = `${toRect.left - fromRect.right}px`;
+                    arrow.style.height = '2px';
+                    arrow.style.transform = 'rotate(0deg)';
+                }
+            }, 50);
+
+            currentIndex = (currentIndex + 1) % path.length;
+            // Show animated text when arrow moves
+            const animatedText = document.querySelector('.animated-text');
+            animatedText.style.opacity = '1';
+
+            // Update animated text content only when the class of the 'from' element changes
+            const currentElementClass = from.className;
+            const newTextContent = animatedTextContent[currentElementClass] || '';
+            if (currentElementClass !== previousElementClass && newTextContent !== '') {
+                animatedText.textContent = newTextContent;
+                previousElementClass = currentElementClass;
+            }
+
+            // Display the texts with a word by word effect
+            if (currentElementClass === 'aggregator-node') {
+                await displayWords(aggregatorWords, aggregatorText, 100); // 100ms delay between words
+            }
+
+            // If the path hasn't reached the end element, call moveArrow again after 1 second
+            if (currentIndex !== 0) {
+                setTimeout(moveArrow, 500);
+            }
+
+        }
+
+        setTimeout(() => {
+            const userText = document.querySelector('.user-text');
+            const userTextContent = 'Top things to do in NYC?';
+            const userWords = userTextContent.split(' ');
+            displayWords(userWords, userText, 100); // 100ms delay between words
+
+            // Arrow of UserMessage to SystemMessage
+            fromToTo(userMessage, systemMessage);
+
+            // Call moveArrow for the first time
+            setTimeout(moveArrow, 500);
+
+            // Arrow of SystemMessage to AiMessage
+            // fromToTo(systemMessage, aiMessage);
+        }, 1000);
+
+    </script>
+</body>
+</html>
