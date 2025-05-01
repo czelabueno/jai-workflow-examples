@@ -1,17 +1,17 @@
-# LangChain4j-workflow Examples
-This repo have multiple advanced LLM examples using `langchain4j-workflow` and `langchain4j` libs.
+# jAI-workflow Examples
+This repo have Java implementation of advanced AI papers using `jai-workflow` and `langchain4j` libs.
 
 ## LLM examples
 Please note that examples can be modified and more examples will be added over time.
 
 ### MoA
 - **Mixture-of-Agents (MoA)**:
-    - Java example: [`langchain4j-moa`](langchain4j-moa)
+    - Java example: [`jai-workflow-langchain4j-moa`](jai-workflow-langchain4j-moa)
     - Based on Paper: https://arxiv.org/pdf/2406.04692
   
 ### RAG
 - **Corrective RAG (CRAG)**:
-    - Java example: [`langchain4j-corrective-rag`](langchain4j-corrective-rag)
+    - Java example: [`jai-workflow-langchain4j-corrective-rag`](jai-workflow-langchain4j-corrective-rag)
     - Based on Paper: https://arxiv.org/pdf/2401.15884
 - **Adaptive RAG**:
     - Java example: _Very soon_

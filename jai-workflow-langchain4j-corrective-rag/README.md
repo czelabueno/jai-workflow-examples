@@ -1,0 +1,196 @@
+# jAI Workflow :: Corrective RAG
+
+## Overview
+
+Welcome to `jai-workflow-langchain4j-corrective-rag`, a powerful library that bring [Corrective-RAG (CRAG) paper](https://arxiv.org/pdf/2401.15884.pdf) to life in your Java applications. CRAG is a unique strategy for RAG that integrates self-reflection and self-grading on retrieved documents. It's a process that's as dynamic as it is intelligent, taking some steps to ensure the most relevant information is used for final answer generation.
+
+
+This RAG lib is built on top of the `jai-workflow` and `langchain4j` libraries,  which allow you to use your own data, chat language models, web search engine, vector store and others to create a GenAI java app supported with CRAG-based. 
+
+With `jai-workflow-langchain4j-corrective-rag`, implementing CRAG is as easy as defining your documents, setting up a chat language model, defining a web content retriever, and creating a CorrectiveRag instance. It's designed to make your journey with CRAG as smooth as possible, allowing you to focus on your data and AI technologies.
+
+## How it Works
+
+1. If at least one document surpasses the relevance threshold, the system proceeds to generation.
+2. Before generation, it performs knowledge refinement, partitioning the document into "knowledge strips".
+3. Each strip is graded, and the irrelevant ones are filtered out.
+4. If all documents fall below the relevance threshold or if the grader is uncertain, the system seeks an additional data source, supplementing retrieval with web search.
+
+## How to Use
+
+`jai-workflow-langchain4j-corrective-rag` is a library that provides an easy way to implement CRAG in your Java applications. Here are the steps to get started:
+
+### Installation
+```shell
+mvn clean package install
+```
+> **Please note**: that `jai-workflow-langchain4j-corrective-rag` depends on `jai-workflow-0.1.0.jar`. Before installing `jai-workflow-langchain4j-corrective-rag`, ensure that `jai-workflow-0.1.0.jar` is installed in your local repo by following the instructions provided in the [jai-workflow repository](https://github.com/czelabueno/jai-workflow?tab=readme-ov-file#installation).
+>
+>The process of distributing `jai-workflow-langchain4j-corrective-rag` on Maven Central is currently underway.
+
+### Maven dependency
+Add the library to your `pom.xml` file:
+```xml
+<dependencies>
+   ...
+   <dependency>
+      <groupId>io.github.czelabueno</groupId>
+      <artifactId>jai-workflow-langchain4j-corrective-rag</artifactId>
+      <version>0.1.0</version>
+   </dependency>
+</dependencies>
+```
+
+1. **Define your `Document`s**: These are the documents that the system will search for answers. You can use your own data here.
+
+2. **Define a `ChatLanguageModel`**: This is the model that will generate answers. You can use any chat language model that you prefer.
+
+3. **Define a `WebContentRetriever`**: This component will search the web for additional answers when needed.
+
+4. **Create a `CorrectiveRag` instance**: This is the main component that brings everything together. You can use the `DefaultCorrectiveRag` implementation to create a CRAG instance.
+
+In addition to these basic steps, `DefaultCorrectiveRag` implementation also provides several optional args for more advanced use cases:
+
+- **`EmbeddingStoreContentRetriever`**: This is an optional component that you can use to search for answers using your own `EmbbedingStore` and `EmbbedingModel`. By default, `DefaultCorrectiveRag` create an instance of `EmbeddingStoreContentRetriever` using `InMemoryEmbeddingStore` and `BgeSmallEnV15QuantizedEmbeddingModel`. However, for better performance or production environments, we recommend set your own `EmbeddingStoreContentRetriever`.
+
+- **Stream Flag**: This optional flag enables streaming the workflow node by node. By default, it is set to false.
+
+- **GenerateWorkflowImage Flag**: This optional flag allows you to generate a workflow image using Graphviz default settings. By default, it is set to false.
+
+- **WorkflowImageOutputPath**: This optional setting allows you to save the workflow image to a given path. By default, it is null. If it is set, and the `generateWorkflowImage` flag is set to true, the system will save the workflow image to the given path.
+
+## Example
+
+Here is a simple example of how to use the `jai-workflow-langchain4j-corrective-rag` module:
+
+```java
+// 1- Index document content
+List<Document> documents = loadDocuments(
+        "https://lilianweng.github.io/posts/2023-06-23-agent/",
+        "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",
+        "https://lilianweng.github.io/posts/2023-10-25-adv-attack-llm/"
+);
+
+// 2 - Define a chatLanguageModel
+ChatLanguageModel llm = MistralAiChatModel.builder()
+        .apiKey(System.getenv("MISTRAL_AI_API_KEY"))
+        .modelName(MistralAiChatModelName.MISTRAL_LARGE_LATEST)
+        .temperature(0.0)
+        .build();
+
+// 3 - Define a webContentRetriever
+WebSearchContentRetriever webRetriever = WebSearchContentRetriever.builder()
+        .webSearchEngine(TavilyWebSearchEngine.builder().apiKey(System.getenv("TAVILY_API_KEY")).build())
+        .maxResults(3)
+        .build();
+
+// 4 - Create a CorrectiveRag instance
+CorrectiveRag correctiveRag = DefaultCorrectiveRag.builder()
+        .documents(documents) 
+        // OR
+        //.embeddingStoreContentRetriever(contentRetriever) // Optional, by default it uses InMemoryEmbeddingStore and BgeSmallEnV15QuantizedEmbeddingModel
+        .webSearchContentRetriever(webRetriever)
+        .chatLanguageModel(llm)
+        //.stream(true) // Optional, by default it is false, if true it will stream the workflow node by node
+        //.generateWorkflowImage(true) // Optional, by default it is false, if true it will generate a workflow image using Graphviz default settings
+        //.workflowImageOutputPath(Paths.get("corrective-rag-workflow.png")) // Optional, by default it is null. If it is set, it will save the workflow image to the given path and generateWorkflowImage is set to true
+        .build();
+
+// Run the CorrectiveRag instance
+String question = "How does the AlphaCodium paper work?";
+String answer = correctiveRag.answer(question);
+```
+Console
+```shell
+DEBUG: Loading native library: /Users/CarlosZela1/.djl.ai/tokenizers/0.15.0-0.26.0-osx-aarch64/libtokenizers.dylib
+2024-06-24 23:46:24 [main] internal.io.github.czelabueno.jai.workflow.crag.DefaultCorrectiveRag.defaultContentRetriever()
+INFO: Using defaultContentRetriever, embeddingModel:dev.langchain4j.model.embedding.bge.small.en.v15.BgeSmallEnV15QuantizedEmbeddingModel embeddingStore:dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore
+2024-06-24 23:46:24 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Starting to ingest 3 documents
+2024-06-24 23:46:25 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Documents were split into 771 text segments
+2024-06-24 23:46:25 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Starting to embed 771 text segments
+2024-06-24 23:46:34 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Finished embedding 771 text segments
+2024-06-24 23:46:34 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Starting to store 771 text segments into the embedding store
+2024-06-24 23:46:34 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+DEBUG: Finished storing 771 text segments into the embedding store
+2024-06-24 23:46:34 [main] internal.io.github.czelabueno.jai.workflow.crag.DefaultCorrectiveRag.defaultContentRetriever()
+INFO: Using defaultContentRetriever, embeddingModel:dev.langchain4j.model.embedding.bge.small.en.v15.BgeSmallEnV15QuantizedEmbeddingModel embeddingStore:dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore
+2024-06-24 23:46:34 [main] dev.langchain4j.store.embedding.EmbeddingStoreIngestor.ingest()
+2024-06-24 23:46:47 [main] internal.io.github.czelabueno.jai.workflow.crag.DefaultCorrectiveRag.answer()
+INFO: Running workflow in normal mode...
+2024-06-24 23:46:47 [main] dev.langchain4j.workflow.DefaultStateWorkflow.runNode()
+DEBUG: STARTING workflow in normally mode..
+2024-06-24 23:46:47 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.retrieve()
+2024-06-24 23:46:47 [main] dev.langchain4j.workflow.DefaultStateWorkflow.runNode()
+INFO: ---RETRIEVE---
+2024-06-24 23:46:47 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.gradeDocuments()
+INFO: ---CHECK DOCUMENT RELEVANCE TO QUESTION---
+2024-06-24 23:46:48 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.gradeDocuments()
+INFO: ---GRADE: DOCUMENT NOT RELEVANT---
+2024-06-24 23:46:49 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.gradeDocuments()
+INFO: ---GRADE: DOCUMENT NOT RELEVANT---
+2024-06-24 23:46:49 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.gradeDocuments()
+INFO: ---GRADE: DOCUMENT NOT RELEVANT---
+2024-06-24 23:46:49 [main] internal.io.github.czelabueno.jai.workflow.crag.DefaultCorrectiveRag.lambda$correctiveWorkflow$6()
+INFO: ---DECISION: ALL DOCUMENTS ARE NOT RELEVANT TO QUESTION, TRANSFORM QUERY---
+2024-06-24 23:46:49 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.transformQuery()
+INFO: ---TRANSFORM QUERY---
+2024-06-24 23:46:50 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.webSearch()
+INFO: ---WEB SEARCH---
+2024-06-24 23:46:50 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.webSearch()
+2024-06-24 23:46:55 [main] workflow.io.github.czelabueno.jai.workflow.crag.CorrectiveNodeFunctions.generate()
+INFO: ---GENERATE---
+2024-06-24 23:46:58 [main] dev.langchain4j.workflow.DefaultStateWorkflow.runNode()
+DEBUG: Reached END state
+2024-06-24 23:46:58 [main] internal.io.github.czelabueno.jai.workflow.crag.DefaultCorrectiveRag.answer()
+DEBUG: Transitions: 
+START -> Retrieve Node -> Grade Node -> Re-Write Query Node -> WebSearch Node -> Generate Node -> END
+2024-06-24 23:46:58 [main] internal.io.github.czelabueno.jai.workflow.crag.DefaultCorrectiveRag.answer()
+INFO: Final Answer: 
+The AlphaCodium method for code generation operates in two main phases. In the pre-processing phase, the model reasons about the problem in natural language, gaining knowledge and insight to help with more difficult stages. The second phase is an iterative code generation phase, where the model generates, runs, and fixes a code solution against public and AI-generated tests. This approach is designed to improve the performance of large language models on code problems by focusing on details, identifying edge cases, and addressing code-specific issues.
+2024-06-24 23:46:58 [main] dev.langchain4j.workflow.graph.graphviz.GraphvizImageGenerator.generateImage()
+DEBUG: Generating image at: /Users/CarlosZela1/jai-workflow-examples/jai-workflow-langchain4j-corrective-rag/images/corrective-wf-2.svg with format: SVG
+Using Dot format: 
+digraph workflow {
+ node [style=filled,fillcolor=lightgrey]
+ rankdir=LR;
+ beautify=true
+
+ start -> RetrieveNode;
+ RetrieveNode -> GradeNode;
+ GradeNode -> RewriteQueryNode;
+ RewriteQueryNode -> WebsearchNode;
+ WebsearchNode -> GenerateNode;
+ GenerateNode -> end;
+
+ start [shape=Mdiamond, fillcolor="orange"];
+ end [shape=Msquare, fillcolor="lightgreen"];
+}
+2024-06-24 23:46:58 [main] guru.nidi.graphviz.engine.AbstractGraphvizEngine.initTask()
+2024-06-24 23:46:58 [main] guru.nidi.graphviz.engine.V8JavascriptEngine.<init>()
+INFO: Starting V8 runtime...
+Process finished with exit code 0
+```
+
+Final answer should be:
+
+```shell
+INFO: Final Answer...
+The AlphaCodium method for code generation operates in two main phases. In the pre-processing phase, the model reasons about the problem in natural language, gaining knowledge and insight to help with more difficult stages. 
+The second phase is an iterative code generation phase, where the model generates, runs, and fixes a code solution against public and AI-generated tests. This approach is designed to improve the performance of large language models on code problems by focusing on details, identifying edge cases, and addressing code-specific issues.
+```
+If generateWorkflowImage is set to `true`, the system will generate an image of the workflow execution. Here is an example of the workflow image generated for the above example:
+
+> **Remember**: The documents ingested do not talk about the AlphaCodium paper, so the system will search the web for additional documents.
+
+![Workflow Image](images/corrective-wf-2.svg)
+
+> :warning: **Important Note**: The `generateWorkflowImage` method relies on Graphviz to create the image. Therefore, it's crucial to have the J2V8 library, which is a set of Java bindings for V8 (a JavaScript engine), available in your Java library path (`java.library.path`). While some JDK distributions may already include this library, if yours does not, you can download the J2V8 library from the [official repository](https://mvnrepository.com/artifact/com.eclipsesource.j2v8).
+
+Enjoy!
+
+@c_zela
